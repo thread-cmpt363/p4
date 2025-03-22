@@ -1,13 +1,14 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Calendar, Shirt, Sun } from "lucide-react-native";
+import BottomNavigation from '../components/ui/bottomNavigation';
 
 export default function Dashboard(): JSX.Element {
   // Data for recently added clothing items
   const recentlyAddedItems = [
-    { id: 1, src: "", alt: "Blue top with pink design" },
-    { id: 2, src: "", alt: "Denim shorts" },
-    { id: 3, src: "", alt: "White t-shirt with cat print" },
+    { id: 1, src: require("../assets/images/dashboard/navy_pink_top.png"), alt: "Blue top with pink design" },
+    { id: 2, src: require("../assets/images/dashboard/denim_jeans.png"), alt: "Denim shorts" },
+    { id: 3, src: require("../assets/images/dashboard/cat_shirt.png"), alt: "White t-shirt with cat print" },
   ];
 
   return (
@@ -31,7 +32,7 @@ export default function Dashboard(): JSX.Element {
               <Image
                 key={item.id}
                 style={styles.image}
-                source={{ uri: item.src || "https://via.placeholder.com/100" }}
+                source={item.src}
               />
             ))}
           </View>
@@ -62,6 +63,9 @@ export default function Dashboard(): JSX.Element {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Style Me</Text>
         </TouchableOpacity>
+
+        <BottomNavigation />
+
       </View>
     </View>
   );
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     padding: 20,
-    backgroundColor: "#2b2b2b",
+    backgroundColor: "#121212",
   },
   card: {
     backgroundColor: "#444",
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
   },
   recentlyAddedText: {
     fontSize: 14,
-    color: "#4aa3df",
+    color: "#C1D1D7",
     marginBottom: 8,
   },
   imageContainer: {
@@ -165,14 +169,14 @@ const styles = StyleSheet.create({
     color: "black",
   },
   button: {
-    backgroundColor: "#4aa3df",
+    backgroundColor: "#C1D1D7",
     paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
     marginTop: 16,
   },
   buttonText: {
-    color: "white",
+    color: "1e1e1e",
     fontSize: 16,
     fontWeight: "bold",
   },
