@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 0,
     justifyContent: "center",
-    marginTop: "-120",
+    marginTop: "-160",
   },
   welcomeSection: {
     position: "relative",
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     lineHeight: 43.2,
   },
   descriptionSection: {
-    marginTop: 40,
+    marginTop: 24,
   },
   description: {
     fontFamily: "Lexend-Regular",
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   additionalInfo: {
-    marginTop: 40,
+    marginTop: 16,
   },
   button: {
     width: "100%",

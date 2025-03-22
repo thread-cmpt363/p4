@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#222",
     padding: 16,
     borderRadius: 10,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   cardHeader: {
     flexDirection: "row",
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 16
+    gap: 8,
   },
   dateCard: {
     flex: 1,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   weatherText: {
     fontSize: 14,
-    color: "1e1e1e",
+    color: "#1e1e1e",
   },
   button: {
     backgroundColor: "#C1D1D7",
