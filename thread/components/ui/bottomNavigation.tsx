@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { LayoutGrid, Plus, User } from "lucide-react-native"; // Assuming lucide-react-native is in use
 
 export default function BottomNavigation() {
@@ -10,7 +10,7 @@ export default function BottomNavigation() {
       label: "Dashboard",
     },
     {
-      icon: <Plus size={25} color="white" />,
+      icon: <Plus size={25} color="#1e1e1e" strokeWidth={3} />,
       label: "",
       isCenter: true,
     },
@@ -26,8 +26,12 @@ export default function BottomNavigation() {
         <View style={styles.navItemsContainer}>
           {/* Dashboard Button */}
           <View style={styles.iconContainer}>
-            {navItems[0].icon}
-            <Text style={styles.iconLabel}>{navItems[0].label}</Text>
+          <Image 
+            source={{ uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAdUlEQVR4nOWVQQrAIAwEfV7+/4T0IVP05KGKu2Chda6JDDEmlvIbgAAunskad3J7QQ3MSCe3FzQG1TWc3HMFyeYexEQyfEV62QpvCHL1XjEHbflecZosVttQY3sFaMvOEihNtgTLhzhWkGz+cEIYtJCX3We5AbskbaLkfaUHAAAAAElFTkSuQmCC' }} 
+            style={{ width: 24, height: 24, borderColor: "white" }}
+          />
+           
+          <Text style={styles.iconLabel}>{navItems[0].label}</Text>
           </View>
 
           {/* Center Add Button */}
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     width: 35.06,
     height: 35.06,
     borderRadius: 17.53,
-    backgroundColor: "#007bff", // Replace with your desired color
+    backgroundColor: "#C1D1D7", // Replace with your desired color
     justifyContent: "center",
     alignItems: "center",
   },

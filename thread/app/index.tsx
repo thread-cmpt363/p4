@@ -2,8 +2,11 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Calendar, Shirt, Sun } from "lucide-react-native";
 import BottomNavigation from '../components/ui/bottomNavigation';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Dashboard(): JSX.Element {
+export default function Dashboard(){
+  const navigation = useNavigation();
+
   // Data for recently added clothing items
   const recentlyAddedItems = [
     { id: 1, src: require("../assets/images/dashboard/navy_pink_top.png"), alt: "Blue top with pink design" },
@@ -44,7 +47,7 @@ export default function Dashboard(): JSX.Element {
           <View style={[styles.card, styles.dateCard]}>
             <Text style={styles.dayText}>Monday</Text>
             <Text style={styles.dateText}>8</Text>
-            <Calendar size={24} color="#555" />
+            <Calendar size={24} color="#1e1e1e" />
           </View>
 
           {/* Weather Card */}
@@ -60,7 +63,10 @@ export default function Dashboard(): JSX.Element {
         </View>
 
         {/* Style Me Button */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('styleMeQuiz')}
+        >
           <Text style={styles.buttonText}>Style Me</Text>
         </TouchableOpacity>
 
@@ -80,11 +86,11 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 100,
+    height: 140,
     backgroundColor: "#c1d1d7",
     justifyContent: "flex-end",
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingBottom: 16,
   },
   headerText: {
     fontSize: 32,
@@ -94,14 +100,15 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     width: "100%",
-    padding: 20,
+    padding: 16,
+    paddingTop: 24,
     backgroundColor: "#121212",
   },
   card: {
-    backgroundColor: "#444",
+    backgroundColor: "#222",
     padding: 16,
     borderRadius: 10,
-    marginBottom: 16,
+    marginBottom: 24,
   },
   cardHeader: {
     flexDirection: "row",
@@ -117,20 +124,23 @@ const styles = StyleSheet.create({
   recentlyAddedText: {
     fontSize: 14,
     color: "#C1D1D7",
-    marginBottom: 8,
+    marginTop: 8,
+    marginBottom: 12,
   },
   imageContainer: {
     flexDirection: "row",
+    justifyContent: "space-between",
     gap: 8,
   },
   image: {
-    width: 90,
-    height: 100,
+    width: 96,
+    height: 140,
     borderRadius: 8,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 16
   },
   dateCard: {
     flex: 1,
@@ -140,12 +150,12 @@ const styles = StyleSheet.create({
   },
   dayText: {
     fontSize: 14,
-    color: "#555",
+    color: "#1e1e1e",
   },
   dateText: {
     fontSize: 40,
     fontWeight: "600",
-    color: "#555",
+    color: "#1e1e1e",
   },
   weatherCard: {
     flex: 1,
@@ -154,26 +164,25 @@ const styles = StyleSheet.create({
   },
   cityText: {
     fontSize: 14,
-    color: "#555",
+    color: "#1e1e1e",
   },
   tempText: {
     fontSize: 40,
     fontWeight: "600",
-    color: "#555",
+    color: "#1e1e1e",
   },
   weatherInfo: {
     marginTop: 8,
   },
   weatherText: {
     fontSize: 14,
-    color: "black",
+    color: "1e1e1e",
   },
   button: {
     backgroundColor: "#C1D1D7",
     paddingVertical: 10,
-    borderRadius: 25,
+    borderRadius: 46,
     alignItems: "center",
-    marginTop: 16,
   },
   buttonText: {
     color: "1e1e1e",
