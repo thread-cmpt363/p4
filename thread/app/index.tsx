@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Calendar, Shirt, Sun } from "lucide-react-native";
 import BottomNavigation from '../components/ui/bottomNavigation';
 import { useNavigation } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+
 
 export default function Dashboard(){
   const navigation = useNavigation();
@@ -14,11 +16,20 @@ export default function Dashboard(){
     { id: 3, src: require("../assets/images/dashboard/cat_shirt.png"), alt: "White t-shirt with cat print" },
   ];
 
+  const [fontsLoaded] = useFonts({
+    'Poppins': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Lexend': require('../assets/fonts/Lexend-Regular.ttf'),
+  });
+  
+  if (!fontsLoaded) {
+    return null; // Prevent rendering until fonts are loaded
+  }
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerText}>Dashboard</Text>
+        <Text style={[styles.headerText, styles.poppinsBold]}>Dashboard</Text>
       </View>
 
       {/* Main Content */}
@@ -26,10 +37,11 @@ export default function Dashboard(){
         {/* Your Closet Card */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Shirt size={20} color="white" />
-            <Text style={styles.cardTitle}>Your Closet</Text>
+            <Shirt size={20} color="white" strokeWidth={2.5}
+            style={{marginTop: 8}} />
+            <Text style={[styles.cardTitle, styles.poppinsBold]}>Your Closet</Text>
           </View>
-          <Text style={styles.recentlyAddedText}>Recently Added</Text>
+          <Text style={[styles.recentlyAddedText, styles.lexendRegular]}>Recently Added</Text>
           <View style={styles.imageContainer}>
             {recentlyAddedItems.map((item) => (
               <Image
@@ -45,19 +57,20 @@ export default function Dashboard(){
         <View style={styles.row}>
           {/* Date Card */}
           <View style={[styles.card, styles.dateCard]}>
-            <Text style={styles.dayText}>Monday</Text>
-            <Text style={styles.dateText}>8</Text>
-            <Calendar size={24} color="#1e1e1e" />
+            <Text style={[styles.dayText, styles.poppinsSemibold]}>Monday</Text>
+            <Text style={[styles.dateText, styles.poppinsSemibold]}>8</Text>
+            <Calendar size={24} strokeWidth={2.5} color="#1e1e1e" 
+            style={{position: "absolute", bottom:24, left:16}} />
           </View>
 
           {/* Weather Card */}
           <View style={[styles.card, styles.weatherCard]}>
-            <Text style={styles.cityText}>Vancouver</Text>
-            <Text style={styles.tempText}>12°</Text>
+            <Text style={[styles.cityText, styles.poppinsSemibold]}>Vancouver</Text>
+            <Text style={[styles.tempText, styles.poppinsSemibold]}>12°</Text>
             <View style={styles.weatherInfo}>
-              <Sun size={16} color="black" />
-              <Text style={styles.weatherText}>Sunny</Text>
-              <Text style={styles.weatherText}>H:12° L:8°</Text>
+              <Sun size={20} color="#1e1e1e" fill="#1e1e1e" />
+              <Text style={[styles.weatherText, styles.lexendRegular]}>Sunny</Text>
+              <Text style={[styles.weatherText, styles.lexendRegular]}>H:12° L:8°</Text>
             </View>
           </View>
         </View>
@@ -67,7 +80,7 @@ export default function Dashboard(){
           style={styles.button}
           onPress={() => navigation.navigate('styleMeQuiz')}
         >
-          <Text style={styles.buttonText}>Style Me</Text>
+          <Text style={[styles.buttonText, styles.poppinsBold]}>Style Me</Text>
         </TouchableOpacity>
 
         <BottomNavigation />
@@ -79,6 +92,17 @@ export default function Dashboard(){
 
 // Styles
 const styles = StyleSheet.create({
+  poppinsBold: {
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+  },
+  poppinsSemibold: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+  },
+  lexendRegular: {
+    fontFamily: "Lexend",
+  },
   container: {
     flex: 1,
     backgroundColor: "#1e1e1e",
@@ -94,7 +118,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 32,
-    fontWeight: "bold",
+    // fontWeight: "800",
     color: "#1e1e1e",
   },
   main: {
@@ -116,13 +140,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     color: "white",
     marginLeft: 8,
+    marginBottom: "-8",
   },
   recentlyAddedText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#C1D1D7",
     marginTop: 8,
     marginBottom: 12,
@@ -149,12 +174,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   dayText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#1e1e1e",
   },
   dateText: {
-    fontSize: 40,
-    fontWeight: "600",
+    fontSize: 48,
     color: "#1e1e1e",
   },
   weatherCard: {
@@ -163,7 +187,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   cityText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#1e1e1e",
   },
   tempText: {
@@ -175,7 +199,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   weatherText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#1e1e1e",
   },
   button: {
@@ -185,7 +209,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "1e1e1e",
+    color: "#1e1e1e",
     fontSize: 16,
     fontWeight: "bold",
   },

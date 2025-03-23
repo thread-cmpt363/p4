@@ -48,7 +48,7 @@ export default function StyleMeQuiz() {
       <View style={styles.mainContent}>
         {/* Welcome section with star icon */}
         <View style={styles.welcomeSection}>
-          <Star size={27} color="white" fill="white" style={styles.starIcon} />
+          <Star size={27} color="#C1D1D7" fill="#C1D1D7" style={styles.starIcon} />
           <Text style={styles.welcomeTitle}>{welcomeText.title}</Text>
         </View>
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Poppins-Bold",
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: 36,
     color: "#1e1e1e",
   },
   mainContent: {
