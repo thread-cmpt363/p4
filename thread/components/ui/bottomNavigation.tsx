@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from "react-native";
-import { LayoutGrid, Plus, User, Camera, Image as ImageIcon } from "lucide-react-native";
+import { LayoutGrid, Plus, User, Camera, Image as ImageIcon, X } from "lucide-react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker"; // Import ImagePicker from expo
 
@@ -101,17 +101,22 @@ export default function BottomNavigation() {
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <TouchableOpacity style={styles.optionButton} onPress={openCamera}>
-              <Camera size={24} color="black" />
-              <Text style={styles.optionText}>Take Photo</Text>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <X size={20} strokeWidth={3.5} color="#C1D1D7" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton} onPress={openGallery}>
-              <ImageIcon size={24} color="black" />
-              <Text style={styles.optionText}>Choose from Gallery</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton} onPress={() => setModalVisible(false)}>
-              <Text style={styles.optionText}>Cancel</Text>
-            </TouchableOpacity>
+            <Text style={[styles.poppinsBold, styles.addClosetText]}>
+              Add clothes to closet
+            </Text>
+            <View style={styles.modalOptions}>
+              <TouchableOpacity style={styles.optionButton} onPress={openGallery}>
+                  <ImageIcon size={24} color="#1e1e1e" />
+                  <Text style={styles.optionText}>Open gallery</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton} onPress={openCamera}>
+                <Camera size={24} color="#1e1e1e" />
+                <Text style={styles.optionText}>Take photo</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -121,6 +126,17 @@ export default function BottomNavigation() {
 }
 
 const styles = StyleSheet.create({
+  poppinsBold: {
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+  },
+  poppinsSemibold: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+  },
+  lexendRegular: {
+    fontFamily: "Lexend",
+  },
   container: {
     flex: 1,
     backgroundColor: "#1e1e1e",
@@ -167,13 +183,51 @@ const styles = StyleSheet.create({
     top: 35,
     width: "100%",
     textAlign: "center",
-    fontFamily: "Lexend-Regular", // You might need to add this font
+    fontFamily: "Lexend-Regular", 
     fontSize: 8,
     color: "white",
   },
-  modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" },
-  modalContent: { backgroundColor: "white", padding: 20, borderRadius: 10, width: 250, alignItems: "center" },
-  optionButton: { flexDirection: "row", alignItems: "center", marginVertical: 10 },
-  optionText: { marginLeft: 10, fontSize: 16 },
+  modalContainer: { 
+    flex: 1, 
+    justifyContent: "flex-end", 
+    alignItems: "center", 
+  },
+  modalContent: { 
+    backgroundColor: "#222222", 
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 56, 
+    borderRadius: 24, 
+    alignItems: "center",
+    position: "relative",
+    width: "99.8%",
+    height: "240",
+  },
+  addClosetText: {
+    fontSize:20,
+    marginTop:8,
+    color: "#C1D1D7",
+  },
+  modalOptions: {
+    display: "flex", 
+    flexDirection: 'row',
+    height: "90%",
+    gap: 16,
+  },
+  optionButton: { 
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10, 
+    backgroundColor: "#C1D1D7", 
+    borderRadius: 16,
+    padding: 8,
+    width: "50%",
+  },
+  optionText: { 
+    fontFamily: "Poppins",
+    fontWeight: "700",
+    marginLeft: 10, 
+    fontSize: 16, 
+  },
   imagePreview: { width: 100, height: 100, marginTop: 10, borderRadius: 8 },
 });

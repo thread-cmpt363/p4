@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 140,
+    height: 124,
     backgroundColor: "#c1d1d7",
     justifyContent: "flex-end",
-    paddingHorizontal: 20,
-    paddingBottom: 16,
+    paddingLeft: 20,
+    paddingBottom: 8,
   },
   headerText: {
     fontSize: 32,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     color: "#1e1e1e",
   },
   dateText: {
-    fontSize: 48,
+    fontSize: 42,
     color: "#1e1e1e",
   },
   weatherCard: {
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     color: "#1e1e1e",
   },
   weatherInfo: {
-    marginTop: 8,
+    marginTop: 0,
   },
   weatherText: {
     fontSize: 16,
