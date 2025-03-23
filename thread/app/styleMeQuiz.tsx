@@ -39,8 +39,8 @@ export default function StyleMeQuiz() {
 
         {/* Title with sparkle icon */}
         <View style={styles.titleContainer}>
-          <Sparkles size={24} color="#1e1e1e" />
-          <Text style={styles.title}>Style Me</Text>
+          <Sparkles size={24} strokeWidth={2.5} color="#1e1e1e" style={{marginRight: 8}} />
+          <Text style={[styles.title, styles.poppinsBold]}>Style Me</Text>
         </View>
       </View>
 
@@ -48,8 +48,8 @@ export default function StyleMeQuiz() {
       <View style={styles.mainContent}>
         {/* Welcome section with star icon */}
         <View style={styles.welcomeSection}>
-          <Star size={27} color="#C1D1D7" fill="#C1D1D7" style={styles.starIcon} />
-          <Text style={styles.welcomeTitle}>{welcomeText.title}</Text>
+          <Star size={27} color="#C1D1D7" fill="#C1D1D7" />
+          <Text style={[styles.welcomeTitle, styles.poppinsBold]}>{welcomeText.title}</Text>
         </View>
 
         {/* Description section */}
@@ -62,7 +62,7 @@ export default function StyleMeQuiz() {
 
         {/* Get Started button */}
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Get Started</Text>
+          <Text style={[styles.buttonText, styles.poppinsBold]}>Get Started</Text>
         </TouchableOpacity>
       </View>
 
@@ -72,6 +72,17 @@ export default function StyleMeQuiz() {
 
 // Styles
 const styles = StyleSheet.create({
+  poppinsBold: {
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+  },
+  poppinsSemibold: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+  },
+  lexendRegular: {
+    fontFamily: "Lexend",
+  },
   container: {
     flex: 1,
     backgroundColor: "#1e1e1e",
@@ -94,15 +105,13 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 32,
+    marginTop: 36,
     // position: "absolute",
     // top: 46,
     // left: 118,
   },
   title: {
-    fontFamily: "Poppins-Bold",
-    fontWeight: "bold",
-    fontSize: 36,
+    fontSize: 24,
     color: "#1e1e1e",
   },
   mainContent: {
@@ -117,16 +126,9 @@ const styles = StyleSheet.create({
   welcomeSection: {
     position: "relative",
   },
-  starIcon: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-  },
   welcomeTitle: {
-    marginTop: 41,
-    fontFamily: "Poppins-Bold",
-    fontWeight: "bold",
-    fontSize: 32,
+    marginTop: 24,
+    fontSize: 36,
     color: "#c1d1d7",
     lineHeight: 43.2,
   },
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   description: {
-    fontFamily: "Lexend-Regular",
+    fontFamily: "Lexend",
     fontWeight: "normal",
     fontSize: 16,
     color: "white",
