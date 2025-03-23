@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Calendar, Shirt, Sun } from "lucide-react-native";
 import BottomNavigation from '../components/ui/bottomNavigation';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-
 
 export default function Dashboard(){
   const navigation = useNavigation();
