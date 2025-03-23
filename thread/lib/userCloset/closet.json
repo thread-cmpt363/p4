@@ -1,43 +1,43 @@
 {
     "clothingItems": [
       {
-        "imagePath": "../lib/userCloset/images/black_denim_jacket.png",
+        "imagePath": "userCloset/images/black_denim_jacket.png",
         "title": "Denim Jacket",
         "description": "A dark wash denim jacket with long sleeves. The jacket features a visible button-up front, a collared neckline, and contrasting white stitching. The stitching highlights the seams and the unique paneling design on the front, creating a distinctive silhouette. The jacket appears to be made of a slightly faded denim fabric, giving it a worn-in look.",
         "category": "Jacket"
       },
       {
-        "imagePath": "../lib/userCloset/images/black_pants.png",
+        "imagePath": "userCloset/images/black_pants.png",
         "title": "Dark Trousers",
         "description": "A pair of dark, possibly black or very dark navy, straight-leg trousers. They appear to be made of a smooth, possibly polyester or blend fabric. The trousers feature a waistband with belt loops, a button and zipper closure, and slanted side pockets. The interior waistband lining is a lighter color, possibly white or cream. The trousers are laid flat on a textured, light-colored surface, creating a 'V' shape.",
         "category": "Bottom"
       },
       {
-        "imagePath": "../lib/userCloset/images/black_and_white_star_shoes.png",
+        "imagePath": "userCloset/images/black_and_white_star_shoes.png",
         "title": "White and Black Sneakers",
         "description": "A pair of white and black sneakers with a chunky sole. The sneakers feature a white mesh upper with black overlays, including a star-shaped design on the side. They have white laces and a white chunky midsole with a black outsole. The brand 'LOEWE' is visible on a magazine or book in the background, but is not part of the shoe itself. The name 'HUAN' is visible on the side of the shoe.",
         "category": "Shoes"
       },
       {
-        "imagePath": "../lib/userCloset/images/blue_denim_jeans.png",
+        "imagePath": "userCloset/images/blue_denim_jeans.png",
         "title": "Wide Leg Denim Jeans",
         "description": "A pair of medium-wash denim jeans with a wide leg or bootcut style. The jeans feature a classic five-pocket design with visible stitching and detailing on the back pockets. There is a logo patch on the back waistband and another logo detail on the back right pocket. The denim has a slightly faded appearance, and the jeans are laid flat on a light-colored, wrinkled fabric surface.",
         "category": "Bottom"
       },
       {
-        "imagePath": "../lib/userCloset/images/navy_and_pink_shirt.png",
+        "imagePath": "userCloset/images/navy_and_pink_shirt.png",
         "title": "Layered Halter Neck Top",
         "description": "A dark blue short-sleeved top featuring a light pink or beige halter-style neckline that ties at the back. The top has a graphic print in a lighter color, possibly pink or white, with floral designs and text. The text appears to be in a script font and includes phrases like 'RECORD I'D SEND' and 'IF A SMILE WAS WHAT I'D SEND'.",
         "category": "Top"
       },
       {
-        "imagePath": "../lib/userCloset/images/dithered_cat_shirt.png",
+        "imagePath": "userCloset/images/dithered_cat_shirt.png",
         "title": "Graphic Print T-Shirt",
         "description": "A white, short-sleeved t-shirt with a graphic print of a cat on the front. The cat image is rendered in a halftone or dotted style, creating a pixelated effect. The t-shirt has a crew neck and appears to be fitted or slightly cropped.",
         "category": "Top"
       },
       {
-        "imagePath": "../lib/userCloset/images/white_and_gray_star_shoes.png",
+        "imagePath": "userCloset/images/white_and_gray_star_shoes.png",
         "title": "Bape Sneakers",
         "description": "A pair of low-top sneakers in light grey and white. The sneakers feature a star design on the side in a contrasting grey, and the word 'BAPE' is partially visible on the tongue. The shoes have white laces, a white midsole, and a grey outsole with a ribbed texture. The toe box is white with small perforations.",
         "category": "Shoes"

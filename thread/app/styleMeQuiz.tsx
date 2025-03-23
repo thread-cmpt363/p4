@@ -2,12 +2,14 @@ import React, {useEffect} from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Sparkles, Star, X } from "lucide-react-native"; // Assuming you're using lucide-react-native for icons
 import { useNavigation } from '@react-navigation/native';
-
+import generateHaiku from '../lib/generateOutfit'
 
 export default function StyleMeQuiz() {
   const navigation = useNavigation();
-  
+
   useEffect(() => {
+    generateHaiku();
+
     // Reset any state or effects when the component is mounted
     const unsubscribe = navigation.addListener('focus', () => {
       // Logic to handle when this screen is focused again
