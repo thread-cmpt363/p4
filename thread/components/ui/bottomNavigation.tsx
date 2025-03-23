@@ -95,7 +95,8 @@ export default function BottomNavigation() {
       </View>
 
       {/* Image Preview */}
-      {selectedImage && <Image source={{ uri: selectedImage }} style={styles.imagePreview} />}
+      {selectedImage && <Image source={{ uri: selectedImage }}
+      style={[styles.imagePreview]} />}
 
       {/* Modal for Image Options */}
       <Modal visible={modalVisible} transparent animationType="slide">
@@ -229,5 +230,5 @@ const styles = StyleSheet.create({
     marginLeft: 10, 
     fontSize: 16, 
   },
-  imagePreview: { width: 100, height: 100, marginTop: 10, borderRadius: 8 },
+  imagePreview: { marginTop: 10, borderRadius: 8 },
 });
