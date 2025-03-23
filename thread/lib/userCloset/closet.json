@@ -1,0 +1,10 @@
+{
+    "clothingItems": [
+      {
+        "imagePath": "../lib/userCloset/images/jacket.jpg",
+        "title": "Winter Jacket",
+        "description": "A warm and stylish winter jacket, perfect for cold weather."
+      }
+    ]
+  }
+  
