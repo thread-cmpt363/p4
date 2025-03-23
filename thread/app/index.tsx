@@ -17,6 +17,7 @@ export default function Dashboard(){
 
   const [fontsLoaded] = useFonts({
     'Poppins': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
     'Lexend': require('../assets/fonts/Lexend-Regular.ttf'),
   });
   

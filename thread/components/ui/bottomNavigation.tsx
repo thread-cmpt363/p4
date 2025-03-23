@@ -32,7 +32,6 @@ export default function BottomNavigation() {
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
     }
-    setModalVisible(false);
   };
 
   // Function to take a photo with the camera
@@ -46,7 +45,6 @@ export default function BottomNavigation() {
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
     }
-    setModalVisible(false);
   };
 
 
