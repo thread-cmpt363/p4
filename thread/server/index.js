@@ -4,6 +4,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
 const app = express();
@@ -15,6 +16,16 @@ app.use("/uploads", express.static("uploads"));
 
 const upload = multer({ dest: "uploads/" });
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+//MongoDB setup
+const mongoClient = new MongoClient(process.env.MONGODB_URI);
+let db;
+mongoClient.connect().then(() => {
+    db = mongoClient.db("ThreadApp");
+    console.log("Connected to MongoDB");
+  }).catch(err => {
+    console.error("MongoDB Connection Error:", err);
+  });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
   const imagePath = req.file.path;
@@ -46,11 +57,14 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
     if (titleMatch) title = titleMatch[1].trim();
     if (descMatch) description = descMatch[1].trim();
 
-    res.json({
+    item = {
       title,
       description,
       imagePath: `/uploads/${req.file.filename}`,
-    });
+      createdAt: new Date(),
+    };
+    await db.collection("ThreadApp").insertOne(item);
+    res.json(item);
   } catch (err) {
     console.error("Gemini Error:", err);
     res.status(500).json({ error: "Failed to process image with Gemini AI" });

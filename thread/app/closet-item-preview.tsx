@@ -17,6 +17,7 @@ export default function ClosetItemPreviewScreen() {
 
   const [title, setTitle] = useState(initialTitle as string);
   const [desc, setDesc] = useState(description as string);
+  const [isEditing, setIsEditing] = useState(false);
 
   const saveToCloset = async () => {
     try {
@@ -43,7 +44,7 @@ export default function ClosetItemPreviewScreen() {
     <View style={styles.container}>
       {/* Top Bar */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerIcon}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.headerIcon}>
           <X size={24} color="#1e1e1e" />
         </TouchableOpacity>
 
@@ -54,7 +55,7 @@ export default function ClosetItemPreviewScreen() {
       </View>
 
       {/* Back button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <ArrowLeft size={16} color="#C1D1D7" />
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
@@ -67,22 +68,30 @@ export default function ClosetItemPreviewScreen() {
         <TextInput
           value={title}
           onChangeText={setTitle}
-          style={styles.titleInput}
+          editable={isEditing}
+          style={[styles.titleInput, !isEditing && { opacity: 0.6 }]}
           placeholder="Item title"
           placeholderTextColor="#aaa"
+          returnKeyType="done"
+          blurOnSubmit
+          onSubmitEditing={() => setIsEditing(false)}
         />
 
         <TextInput
           multiline
           value={desc}
           onChangeText={setDesc}
-          style={styles.descInput}
+          editable={isEditing}
+          style={[styles.descInput, !isEditing && { opacity: 0.6 }]}
           placeholder="Item description"
           placeholderTextColor="#aaa"
+          returnKeyType="done"
+          blurOnSubmit
+          onSubmitEditing={() => setIsEditing(false)}
         />
 
         {/* Edit Icon (optional) */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsEditing(true)}>
           <Edit size={24} color="white" />
         </TouchableOpacity>
       </View>
