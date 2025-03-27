@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Modal, Image, Alert } from "react-native";
 import { LayoutGrid, Plus, User, Camera, Image as ImageIcon, X } from "lucide-react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker"; // Import ImagePicker from expo
-
+import { useRouter } from "expo-router";
 
 export default function BottomNavigation() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const router = useRouter();
 
   // Request permissions on mount
   useEffect(() => {
@@ -20,6 +21,40 @@ export default function BottomNavigation() {
     })();
   }, []);
 
+  // Upload to backend
+  const uploadToBackend = async (imageUri: string) => {
+    const formData = new FormData();
+
+    formData.append("image", {
+      uri: imageUri,
+      name: "upload.jpg",
+      type: "image/jpeg",
+    } as unknown as Blob); // TypeScript workaround
+
+    try {
+      const response = await fetch("http://192.168.1.79:3001/api/upload", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const data = await response.json();
+
+      const query =
+        "/closet-item-preview" +
+        `?image=${encodeURIComponent(imageUri)}` +
+        `&title=${encodeURIComponent(data.title)}` +
+        `&description=${encodeURIComponent(data.description)}`;
+
+      router.push(query);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      Alert.alert("Error", "Failed to upload image.");
+    }
+  };
+
   // Function to pick an image from the gallery
   const openGallery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,6 +66,7 @@ export default function BottomNavigation() {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      uploadToBackend(result.assets[0].uri);
     }
   };
 
@@ -44,6 +80,7 @@ export default function BottomNavigation() {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      uploadToBackend(result.assets[0].uri);
     }
   };
 

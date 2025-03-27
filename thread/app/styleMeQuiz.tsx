@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Sparkles, Star, X } from "lucide-react-native"; // Assuming you're using lucide-react-native for icons
 import { useNavigation } from '@react-navigation/native';
-import generateHaiku from '../lib/generateOutfit'
+// import generateHaiku from '../lib/generateOutfit'
 
 export default function StyleMeQuiz() {
   const navigation = useNavigation();
