@@ -6,39 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useRouter } from "expo-router";
 import StyleMeHeader from "../components/ui/StyleMeHeader"; // adjust path based on your structure
 
-
-async function generateOutfitRecommendation() {
-  try {
-    const res = await fetch("http://localhost:3001/api/generate-outfit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: "Generate an outfit based on my closet" }),
-    });
-
-    const data = await res.json();
-    console.log("Outfit generated:", data);
-    return data;
-  } catch (err) {
-    console.error("generateOutfitRecommendation error:", err);
-    return null;
-  }
-}
-
 export default function StyleMeQuiz() {
   const router = useRouter();
   const navigation = useNavigation();
-
-  useEffect(() => {
-    generateOutfitRecommendation();
-
-    // Reset any state or effects when the component is mounted
-    const unsubscribe = navigation.addListener('focus', () => {
-      // Logic to handle when this screen is focused again
-      // For example, resetting any variables or states if needed
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   // Data for the content sections
   const welcomeText = {
