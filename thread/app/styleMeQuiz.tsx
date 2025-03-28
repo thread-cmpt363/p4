@@ -3,12 +3,33 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Sparkles, Star, X } from "lucide-react-native"; // Assuming you're using lucide-react-native for icons
 import { useNavigation } from '@react-navigation/native';
 // import generateHaiku from '../lib/generateOutfit'
+import { useRouter } from "expo-router";
+import StyleMeHeader from "../components/ui/StyleMeHeader"; // adjust path based on your structure
+
+
+async function generateOutfitRecommendation() {
+  try {
+    const res = await fetch("http://localhost:3001/api/generate-outfit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: "Generate an outfit based on my closet" }),
+    });
+
+    const data = await res.json();
+    console.log("Outfit generated:", data);
+    return data;
+  } catch (err) {
+    console.error("generateOutfitRecommendation error:", err);
+    return null;
+  }
+}
 
 export default function StyleMeQuiz() {
+  const router = useRouter();
   const navigation = useNavigation();
 
   useEffect(() => {
-    generateHaiku();
+    generateOutfitRecommendation();
 
     // Reset any state or effects when the component is mounted
     const unsubscribe = navigation.addListener('focus', () => {
@@ -31,18 +52,9 @@ export default function StyleMeQuiz() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* Back button */}
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <X size={20} strokeWidth={3.5} color="#1e1e1e" />
-        </TouchableOpacity>``
-
         {/* Title with sparkle icon */}
         <View style={styles.titleContainer}>
-          <Sparkles size={24} strokeWidth={2.5} color="#1e1e1e" style={{marginRight: 8}} />
-          <Text style={[styles.title, styles.poppinsBold]}>Style Me</Text>
+          <StyleMeHeader onBack={() => navigation.goBack()} />
         </View>
       </View>
 
@@ -63,9 +75,14 @@ export default function StyleMeQuiz() {
         </View>
 
         {/* Get Started button */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/StyleQuestion1")}
+        >
           <Text style={[styles.buttonText, styles.poppinsBold]}>Get Started</Text>
         </TouchableOpacity>
+
+        
       </View>
 
     </View>
