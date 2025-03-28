@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Sparkles, X } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 
 export default function StyleMeHeader({
   showBackButton = true,
@@ -11,11 +12,12 @@ export default function StyleMeHeader({
   title?: string;
 }) {
   const navigation = useNavigation();
+  const router = useRouter();
 
   return (
     <View style={styles.header}>
       {showBackButton && (
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.push("/")}>
           <X size={20} strokeWidth={3.5} color="#1e1e1e" />
         </TouchableOpacity>
       )}
