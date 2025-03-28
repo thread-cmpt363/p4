@@ -80,7 +80,7 @@ export default function Dashboard(){
           style={styles.button}
           onPress={() => navigation.navigate('styleMeQuiz')}
         >
-          <Text style={[styles.buttonText, styles.poppinsBold]}>Style Me</Text>
+          <Text style={[styles.buttonText, styles.poppinsBold]}>Style An Outfit</Text>
         </TouchableOpacity>
 
         <BottomNavigation />

@@ -32,7 +32,7 @@ export default function BottomNavigation() {
     } as unknown as Blob); // TypeScript workaround
 
     try {
-      const response = await fetch("http://192.168.1.79:3001/api/upload", {
+      const response = await fetch("https://84b2-207-23-220-205.ngrok-free.app/api/upload", {
         method: "POST",
         body: formData,
         headers: {

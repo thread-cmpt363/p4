@@ -21,7 +21,7 @@ export default function ClosetItemPreviewScreen() {
 
   const saveToCloset = async () => {
     try {
-      const response = await fetch("http://192.168.1.79:3001/api/save", {
+      const response = await fetch("https://84b2-207-23-220-205.ngrok-free.app/api/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
