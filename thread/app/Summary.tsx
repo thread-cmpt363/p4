@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import StyleMeHeader from "../components/ui/StyleMeHeader";
@@ -17,6 +19,7 @@ export default function Summary() {
   const [occasion, setOccasion] = useState(initialOccasion as string);
   const [layering, setLayering] = useState(initialLayering as string);
   const [style, setStyle] = useState(initialStyle as string);
+  const [loading, setLoading] = useState(false);
 
   const [editField, setEditField] = useState<null | "occasion" | "layering" | "style">(null);
 
@@ -56,6 +59,35 @@ export default function Summary() {
     </View>
   );  
 
+  const generateOutfit = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://a7c3-2001-569-501e-4f00-44f8-db20-f5f2-9937.ngrok-free.app/api/generate-outfit",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ occasion, layering, style }),
+        }
+      );
+
+      const outfit = await response.json();
+      setLoading(false);
+      router.push({
+        pathname: "/style-me-result",
+        params: {
+          top: JSON.stringify(outfit.top),
+          bottom: JSON.stringify(outfit.bottom),
+          layer: JSON.stringify(outfit.layer),
+          shoes: JSON.stringify(outfit.shoes),
+        },
+      });
+    } catch (error) {
+      console.error("Failed to generate outfit:", error);
+      Alert.alert("Error", "Failed to generate outfit. Try again.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -79,8 +111,12 @@ export default function Summary() {
         <TouchableOpacity style={styles.navCircle}>
           <ChevronLeft size={20} color="#1e1e1e" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navCircle}>
-          <ChevronRight size={20} color="#1e1e1e" />
+        <TouchableOpacity style={styles.navCircle} onPress={generateOutfit} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#1e1e1e" />
+          ) : (
+            <ChevronRight size={20} color="#1e1e1e" />
+          )}
         </TouchableOpacity>
       </View>
     </View>
