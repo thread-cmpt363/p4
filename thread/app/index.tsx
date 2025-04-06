@@ -99,7 +99,7 @@ export default function Dashboard(){
 
           {/* Weather Card */}
           <LinearGradient 
-            start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+            start={{x: 0.0, y: 0.05}} end={{x: 0.5, y: 1.5}}
             locations={[0,0.35]}
             colors={['#F4ECCF', '#C0D6DE']} 
             style={[styles.card, styles.weatherCard, styles.rightCardMargin]}>
