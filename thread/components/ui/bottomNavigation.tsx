@@ -130,7 +130,7 @@ export default function BottomNavigation() {
       </View>
 
       {/* Image Preview */}
-      {selectedImage && <Image source={{ uri: selectedImage }} style={styles.imagePreview} />}
+      {/* {selectedImage && <Image source={{ uri: selectedImage }} style={styles.imagePreview} />} */}
 
       {/* Modal for Image Options */}
       <Modal visible={modalVisible} transparent animationType="slide">
@@ -173,15 +173,16 @@ const styles = StyleSheet.create({
     fontFamily: "Lexend",
   },
   container: {
-    flex: 1,
+    boxSizing: "border-box",
     backgroundColor: "#1e1e1e",
+    width: "100%",
+    height: 100,
     position: "absolute",
-    width: "390",
-    height: "100",
-    bottom: "0",
+    bottom: 0,
   },
   navbar: {
     height: 88,
+    flex: 1,
     width: "100%",
     backgroundColor: "#1e1e1e",
     borderTopWidth: 1,
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   navItemsContainer: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

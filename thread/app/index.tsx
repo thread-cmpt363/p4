@@ -35,7 +35,7 @@ export default function Dashboard(){
       {/* Main Content */}
       <View style={styles.main}>
         {/* Your Closet Card */}
-        <View style={styles.card}>
+        <View style={[styles.card, styles.leftCardMargin, styles.rightCardMargin]}>
           <View style={styles.cardHeader}>
             <Shirt size={20} color="white" strokeWidth={2.5}
             style={{marginTop: 8}} />
@@ -56,7 +56,7 @@ export default function Dashboard(){
         {/* Date & Weather Cards */}
         <View style={styles.row}>
           {/* Date Card */}
-          <View style={[styles.card, styles.dateCard]}>
+          <View style={[styles.card, styles.dateCard, styles.leftCardMargin]}>
             <Text style={[styles.dayText, styles.poppinsSemibold]}>Monday</Text>
             <Text style={[styles.dateText, styles.poppinsSemibold]}>8</Text>
             <Calendar size={24} strokeWidth={2.5} color="#1e1e1e" 
@@ -64,7 +64,7 @@ export default function Dashboard(){
           </View>
 
           {/* Weather Card */}
-          <View style={[styles.card, styles.weatherCard]}>
+          <View style={[styles.card, styles.weatherCard, styles.rightCardMargin]}>
             <Text style={[styles.cityText, styles.poppinsSemibold]}>Vancouver</Text>
             <Text style={[styles.tempText, styles.poppinsSemibold]}>12°</Text>
             <View style={styles.weatherInfo}>
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     width: "100%",
-    padding: 16,
     paddingTop: 24,
     backgroundColor: "#121212",
   },
@@ -133,6 +132,12 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     marginBottom: 16,
+  },
+  leftCardMargin: {
+    marginLeft: 24
+  },
+  rightCardMargin: {
+    marginRight: 24
   },
   cardHeader: {
     flexDirection: "row",
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     marginLeft: 8,
-    marginBottom: "-8",
+    marginBottom: -8,
   },
   recentlyAddedText: {
     fontSize: 16,
@@ -206,6 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#C1D1D7",
     paddingVertical: 10,
     borderRadius: 46,
+    marginHorizontal: 24,
     alignItems: "center",
   },
   buttonText: {
