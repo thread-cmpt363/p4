@@ -29,7 +29,7 @@ export default function StyleQuestion1() {
   const [customInput, setCustomInput] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  
+  const { occasion, layering } = useLocalSearchParams();
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function StyleQuestion1() {
 
     router.push({
       pathname: "/Summary",
-      params: { style: finalAnswer },
+      params: { occasion, layering, style: finalAnswer },
     });
   };
 
