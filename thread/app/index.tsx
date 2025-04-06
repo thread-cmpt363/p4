@@ -4,6 +4,7 @@ import { Calendar, Shirt, Sun } from "lucide-react-native";
 import BottomNavigation from '../components/ui/bottomNavigation';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { Svg, Path } from 'react-native-svg';
 
 export default function Dashboard(){
   const navigation = useNavigation();
@@ -80,7 +81,7 @@ export default function Dashboard(){
           style={styles.button}
           onPress={() => navigation.navigate('styleMeQuiz')}
         >
-          <Text style={[styles.buttonText, styles.poppinsBold]}>Style An Outfit</Text>
+          <Text style={[styles.buttonText, styles.poppinsBold]}>Style an Outfit</Text>
         </TouchableOpacity>
 
         <BottomNavigation />
