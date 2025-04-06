@@ -131,7 +131,7 @@ export default function BottomNavigation() {
           </TouchableOpacity>
 
           {/* Profile Button */}
-          <View style={[{marginRight: 6}, styles.iconContainer]}>
+          <View style={[{marginRight: 12}, styles.iconContainer]}>
             <Svg
               width={26}
               height={30}
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     boxSizing: "border-box",
     backgroundColor: "#1e1e1e",
     width: "100%",
-    height: 100,
+    height: 105,
     position: "absolute",
     bottom: 0,
   },
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     fontFamily: "Lexend-Regular", 
-    fontSize: 8,
+    fontSize: 10,
     color: "white",
   },
   modalContainer: { 
