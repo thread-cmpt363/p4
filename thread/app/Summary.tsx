@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -7,13 +7,20 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useNavigation } from '@react-navigation/native';
 import StyleMeHeader from "../components/ui/StyleMeHeader";
-import { Pencil, List, ChevronLeft, ChevronRight, Check } from "lucide-react-native";
+import { List, ChevronLeft, ChevronRight } from "lucide-react-native";
+import { Svg, Path } from "react-native-svg";
 
 export default function Summary() {
   const router = useRouter();
+  const navigation = useNavigation();
   const { occasion: initialOccasion, layering: initialLayering, style: initialStyle } = useLocalSearchParams();
 
   const [occasion, setOccasion] = useState(initialOccasion as string);
@@ -22,44 +29,40 @@ export default function Summary() {
   const [loading, setLoading] = useState(false);
 
   const [editField, setEditField] = useState<null | "occasion" | "layering" | "style">(null);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
-  const renderRow = (
-    label: string,
-    value: string,
-    isEditing: boolean,
-    onChange: (text: string) => void,
-    editKey: "occasion" | "layering" | "style"
-  ) => (
-    <View style={styles.row}>
-      <Text style={styles.label}>{label}:</Text>
-      <View style={styles.answerContainer}>
-        {isEditing ? (
-          <TextInput
-            value={value}
-            onChangeText={onChange}
-            style={styles.input}
-            placeholder={`Edit ${label}`}
-            placeholderTextColor="#555"
-            autoFocus
-            returnKeyType="done"
-            blurOnSubmit
-            onSubmitEditing={() => setEditField(null)}
-          />
-        ) : (
-          <Text style={styles.answer}>{value}</Text>
-        )}
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
   
-        <TouchableOpacity onPress={() => setEditField(editKey)}>
-          <View style={styles.editIconWrapper}>
-            <Pencil size={16} color="#1e1e1e" />
-          </View>
-          <Text style={styles.editText}>EDIT</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );  
+  useEffect(() => {
+    // Listeners for keyboard events
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // Keyboard is visible
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({ y: 100, animated: true }); // Scroll to the bottom when keyboard is shown
+        }
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // Keyboard is hidden
+      }
+    );
 
-  const generateOutfit = async () => {
+    // Clean up the listeners when the component unmounts
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  const handleGenerateOutfit = async () => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -88,70 +91,150 @@ export default function Summary() {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <StyleMeHeader />
-      </View>
+  const handlePrevious = () => {
+    router.push({
+      pathname: "/StyleQuestion3",
+    });
+  };
 
-      {/* Summary Icon and Title */}
-      <View style={styles.iconRow}>
-        <List size={20} color="white" />
-        <Text style={styles.title}>Summary</Text>
-      </View>
-
-      {/* Editable Summary Rows */}
-      {renderRow("Occasion", occasion, editField === "occasion", setOccasion, "occasion")}
-      {renderRow("Layering", layering, editField === "layering", setLayering, "layering")}
-      {renderRow("Style", style, editField === "style", setStyle, "style")}
-
-      {/* Navigation Buttons */}
-      <View style={styles.navButtons}>
-        <TouchableOpacity style={styles.navCircle}>
-          <ChevronLeft size={20} color="#1e1e1e" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navCircle} onPress={generateOutfit} disabled={loading}>
-          {loading ? (
-            <ActivityIndicator size="small" color="#1e1e1e" />
-          ) : (
-            <ChevronRight size={20} color="#1e1e1e" />
-          )}
+  const renderRow = (
+    label: string,
+    value: string,
+    isEditing: boolean,
+    onChange: (text: string) => void,
+    editKey: "occasion" | "layering" | "style"
+  ) => (
+    <View style={styles.row}>
+      <Text style={[styles.label, styles.poppinsBold]}>{label}:</Text>
+      <View style={styles.answerContainer}>
+        {isEditing ? (
+          <TextInput
+            value={value}
+            onChangeText={onChange}
+            style={[styles.input, isFocused && styles.answer, isFocused && styles.lexendRegular ]}
+            placeholder={`Edit ${label}`}
+            placeholderTextColor="#555"
+            autoFocus
+            returnKeyType="done"
+            blurOnSubmit={false}
+            onSubmitEditing={() => setEditField(null)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        ) : (
+          <Text style={[styles.answer, styles.lexendRegular]}>{value}</Text>
+        )}
+        <TouchableOpacity onPress={() => setEditField(editKey)}>
+          <View style={styles.editIconWrapper}>
+            <Svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+              <Path 
+                d="M9.90003 1.83986C10.2221 1.51783 10.6588 1.33691 11.1142 1.33691C11.5697 1.33691 12.0064 1.51783 12.3285 1.83986C12.6505 2.16189 12.8314 2.59866 12.8314 3.05408C12.8314 3.5095 12.6505 3.94626 12.3285 4.26829L4.63842 11.9583L1.40051 12.7678L2.20999 9.5299L9.90003 1.83986Z"
+                stroke="#1E1E1E"
+                strokeWidth="1.61896"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+          </View>
+          <Text style={[styles.editText, styles.poppinsBold]}>EDIT</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.keyboardContainer}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      {/* Header */}
+      <StyleMeHeader onBack={() => navigation.goBack()} />
+
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={[styles.container, keyboardVisible && styles.containerWithKeyboard]}>
+        {/* Summary Icon and Title */}
+        <View style={styles.titleContainer}>
+          <List size={20} color="#c1d1d7" strokeWidth={2} />
+          <Text style={[styles.title, styles.poppinsBold]}>Summary</Text>
+        </View>
+
+        {/* Editable Summary Rows */}
+        {renderRow("Occasion", occasion, editField === "occasion", setOccasion, "occasion")}
+        {renderRow("Layering", layering, editField === "layering", setLayering, "layering")}
+        {renderRow("Style", style, editField === "style", setStyle, "style")}
+
+        {/* Navigation Buttons */}
+        <View style={styles.navigation}>
+          {/* Back button */}
+          <TouchableOpacity
+            style={[styles.navigationButton, styles.backButton]}
+            onPress={handlePrevious}
+          >
+            <ChevronLeft 
+              size={32} 
+              strokeWidth={2.75}
+              fill={"#C1D1D7"} 
+              color={"#1e1e1e"}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.navigationButton, styles.nextButton, loading && { opacity: 0.5 }]}
+            onPress={handleGenerateOutfit}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color="#1e1e1e" />
+            ) : (
+              <ChevronRight 
+                size={32} 
+                strokeWidth={2.75}
+                fill={"#C1D1D7"} 
+                color={"#1e1e1e"}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  keyboardContainer: {
     flex: 1,
     backgroundColor: "#1e1e1e",
+    justifyContent: "center",
+  },
+  containerWithKeyboard: {
+    paddingBottom: 24, // Increase padding when the keyboard is visible
+  },
+  scrollContainer: {
     paddingBottom: 30,
   },
-  header: {
-    width: "100%",
-    height: 110,
-    backgroundColor: "#c1d1d7",
-    justifyContent: "center",
-    alignItems: "center",
+  poppinsBold: {
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+  },
+  lexendRegular: {
+    fontFamily: "Lexend",
+  },
+  container: {
+    // flex: 1,
+    // backgroundColor: "#1e1e1e",
+    paddingBottom: 0,
   },
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 36,
-  },
-  iconRow: {
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 36,
-    gap: 12,
+    paddingHorizontal: 24,
+    gap: 8,
+    marginTop: 100,
+    marginBottom: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
-    color: "white",
+    color: "#c1d1d7",
   },
   row: {
     paddingHorizontal: 20,
@@ -159,23 +242,24 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "#c1d1d7",
-    fontSize: 14,
+    fontSize: 20,
     marginBottom: 8,
     fontWeight: "600",
   },
   answerContainer: {
-    backgroundColor: "#c1d1d7",
-    borderRadius: 50,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   answer: {
     color: "#1e1e1e",
-    fontSize: 14,
+
+    backgroundColor: "#c1d1d7",
+    flex: 1,
+    borderRadius: 50,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    fontSize: 16,
     fontWeight: "600",
+    textAlign: "center",
   },
   input: {
     color: "#1e1e1e",
@@ -184,25 +268,42 @@ const styles = StyleSheet.create({
   },
   editIconWrapper: {
     marginLeft: 12,
-    backgroundColor: "white",
-    borderRadius: 50,
-    padding: 4,
-  },
-  editText: {
-    fontSize: 10,
-    color: "#c1d1d7",
-    marginTop: 2,
-    textAlign: "center",
-  },
-  navButtons: {
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 40,
-  },
-  navCircle: {
     backgroundColor: "#c1d1d7",
     borderRadius: 50,
-    padding: 12,
+    padding: 8,
+  },
+  editText: {
+    fontSize: 12,
+    color: "#c1d1d7",
+    textAlign: "center",
+    paddingLeft:10,
+    position:"relative",
+    top:6,
+  },
+  navigation: {
+    marginTop: 130,
+    flexDirection: "row",
+  },
+  navigationButton: {
+    backgroundColor: "#c1d1d7",
+    marginHorizontal: 24,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 48,
+    height: 48,
+  },
+  nextButton: {
+    marginLeft: "auto",
+    paddingLeft:4,
+  },
+  backButton: {
+    marginRight: "auto",
+    paddingRight:4,
+  },
+  navigationButtonText: {
+    color: "#1e1e1e",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
