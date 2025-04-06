@@ -10,10 +10,10 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { Shirt } from "lucide-react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useNavigation } from '@react-navigation/native';
 import StyleMeHeader from "../components/ui/StyleMeHeader";
+import { Svg, Path } from "react-native-svg";
 import { ChevronLeft, ChevronRight } from "lucide-react-native"; 
 
 
@@ -87,7 +87,22 @@ export default function StyleQuestion1() {
       >
         {/* Question */}
         <View style={styles.questionWrapper}>
-          <Shirt size={20} color="white" />
+          <Svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <Path 
+              d="M16.5 2.66663V6.33329M22.5 29.3333H28.5L25.8333 2.66663H7.16667L4.5 29.3333H10.5L16.5 12.6666L22.5 29.3333Z" 
+              stroke="#C1D1D7" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+            <Path 
+              d="M11.8334 2.66663C11.8334 2.66663 11.8334 6.66663 10.5 7.99996C9.16668 9.33329 6.43335 9.99996 6.43335 9.99996M21.1667 2.66663C21.1667 2.66663 21.1667 6.66663 22.5 7.99996C23.8334 9.33329 26.5667 9.99996 26.5667 9.99996" 
+              stroke="#C1D1D7" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+          </Svg>
           <Text style={[styles.questionText, styles.poppinsBold]}>
             What’s your{'\n'}preferred style for{'\n'}this outfit?
           </Text>
@@ -238,12 +253,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   navigation: {
-    marginTop: 110,
+    marginTop: 130,
     flexDirection: "row",
   },
   navigationButton: {
     backgroundColor: "#c1d1d7",
-    // marginTop: 110,
     marginHorizontal: 24,
     borderRadius: 100,
     alignItems: "center",

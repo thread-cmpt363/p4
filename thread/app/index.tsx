@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Shirt, Sun } from "lucide-react-native";
+import { Sun } from "lucide-react-native";
 import BottomNavigation from '../components/ui/bottomNavigation';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -21,6 +21,7 @@ export default function Dashboard(){
     'Poppins': require('../assets/fonts/Poppins-Regular.ttf'),
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
     'Lexend': require('../assets/fonts/Lexend-Regular.ttf'),
+    'Lexend-SemiBold': require('../assets/fonts/Lexend-SemiBold.ttf'),
   });
   
   if (!fontsLoaded) {
