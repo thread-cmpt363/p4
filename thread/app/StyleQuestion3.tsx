@@ -140,6 +140,7 @@ export default function StyleQuestion1() {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             style={[styles.input, styles.inputText]}
+            returnKeyType="done"
           />
 
           {/* Next button */}
