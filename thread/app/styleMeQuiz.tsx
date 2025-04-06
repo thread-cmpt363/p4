@@ -21,12 +21,8 @@ export default function StyleMeQuiz() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        {/* Title with sparkle icon */}
-        <View style={styles.titleContainer}>
-          <StyleMeHeader onBack={() => navigation.goBack()} />
-        </View>
-      </View>
+      {/* Title with sparkle icon */}
+      <StyleMeHeader onBack={() => navigation.goBack()} />  
 
       {/* Main content */}
       <View style={styles.mainContent}>
@@ -78,31 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
   },
-  header: {
-    width: "100%",
-    height: 110,
-    backgroundColor: "#c1d1d7",
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  backButton: {
-    position: "absolute",
-    top: 62,
-    left: 20,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 36,
-    // position: "absolute",
-    // top: 46,
-    // left: 118,
-  },
-  title: {
-    fontSize: 24,
-    color: "#1e1e1e",
-  },
+
   mainContent: {
     flex: 1,
     width: "100%",
