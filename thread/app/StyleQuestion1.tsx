@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -8,11 +8,13 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
 } from "react-native";
-import { X, Calendar, Sparkles } from "lucide-react-native";
+import { Svg, Path } from "react-native-svg";
 import { useRouter } from "expo-router";
 import { useNavigation } from '@react-navigation/native';
 import StyleMeHeader from "../components/ui/StyleMeHeader";
+import { ChevronRight } from "lucide-react-native"; 
 
 const OCCASIONS = [
   "Work", "Dinner", "Lunch", "Date Night", "School", "Workout",
@@ -24,6 +26,40 @@ export default function StyleQuestion1() {
   const navigation = useNavigation();
   const [selected, setSelected] = useState<string | null>(null);
   const [customInput, setCustomInput] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false); 
+  
+  const scrollViewRef = useRef<ScrollView | null>(null);
+  
+  useEffect(() => {
+    // Listeners for keyboard events
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // Keyboard is visible
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollToEnd({ animated: true }); // Scroll to the bottom when keyboard is shown
+        }
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // Keyboard is hidden
+      }
+    );
+
+    // Clean up the listeners when the component unmounts
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  // Function to handle when user clicks on the placeholder
+  const handleClickPlaceholder = () => {
+    setIsFocused(true); // This will focus the TextInput
+  };
 
   const handleNext = () => {
     const finalAnswer = [selected, customInput].filter(Boolean).join(": ");
@@ -36,122 +72,128 @@ export default function StyleQuestion1() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.titleContainer}>
-          <StyleMeHeader onBack={() => navigation.goBack()} />
+    <KeyboardAvoidingView
+      style={styles.keyboardContainer}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <StyleMeHeader onBack={() => navigation.goBack()} />
+
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={[styles.container, keyboardVisible && styles.containerWithKeyboard]}
+      >
+        {/* Question */}
+        <View style={styles.questionWrapper}>
+          <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <Path d="M25.3333 25.3333H6.66667V10.6667H25.3333M21.3333 1.33334V4.00001H10.6667V1.33334H8V4.00001H6.66667C5.18667 4.00001 4 5.18668 4 6.66668V25.3333C4 26.0406 4.28095 26.7189 4.78105 27.219C5.28115 27.7191 5.95942 28 6.66667 28H25.3333C26.0406 28 26.7189 27.7191 27.219 27.219C27.719 26.7189 28 26.0406 28 25.3333V6.66668C28 5.95943 27.719 5.28116 27.219 4.78106C26.7189 4.28096 26.0406 4.00001 25.3333 4.00001H24V1.33334M22.6667 16H16V22.6667H22.6667V16Z" fill="#C1D1D7"/>
+          </Svg>
+          <Text style={[styles.questionText, styles.poppinsBold]}>
+            What’s the{'\n'}occasion today?
+          </Text>
         </View>
-      </View>
 
-      {/* Question */}
-      <View style={styles.questionWrapper}>
-        <Calendar size={20} color="white" />
-        <Text style={styles.questionText}>What’s the{'\n'}occasion today?</Text>
-      </View>
+        {/* Options */}
+        <View style={styles.buttonGrid}>
+          {OCCASIONS.map((item) => (
+            <TouchableOpacity
+              key={item}
+              style={[styles.button, selected === item && styles.selectedButton]}
+              onPress={() => {
+                // Toggle selection: if the item is selected, deselect it, otherwise select it
+                setSelected((prevSelected) => (prevSelected === item ? null : item));
+              }}
+            >
+              <Text style={[styles.buttonText, styles.lexendRegular, selected === item && styles.selectedText]}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {/* Options */}
-      <ScrollView contentContainerStyle={styles.buttonGrid}>
-        {OCCASIONS.map((item) => (
-          <TouchableOpacity
-            key={item}
-            style={[
-              styles.button,
-              selected === item && styles.selectedButton,
-            ]}
-            onPress={() => {
-              setSelected(item);
+        {/* Text input + "Next" */}
+        <View style={styles.bottomArea}>
+          {!isFocused && customInput === '' ? (
+            <Text 
+              style={[styles.label, styles.lexendRegular]} 
+              onPress={handleClickPlaceholder}
+            >
+              Or start typing...
+            </Text>
+          ) : null}
+          <TextInput
+            placeholder=""
+            value={customInput}
+            onChangeText={(text) => {
+              setCustomInput(text);
             }}
-          >
-            <Text style={styles.buttonText}>{item}</Text>
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            style={[styles.input, styles.inputText]}
+          />
+
+            <TouchableOpacity
+              style={[
+                styles.nextButton,
+                !(selected || customInput) && { opacity: 0 },
+              ]}
+              onPress={handleNext}
+              disabled={!(selected || customInput)}
+            >
+              <ChevronRight 
+                size={32} 
+                strokeWidth={2.75}
+                fill={"#C1D1D7"} 
+                color={"#1e1e1e"}
+              />
           </TouchableOpacity>
-        ))}
+        </View>
       </ScrollView>
-
-      {/* Text input + "Next" */}
-      <View style={styles.bottomArea}>
-        <Text style={styles.orText}>Or start typing...</Text>
-        <TextInput
-          placeholder="Type your occasion"
-          placeholderTextColor="#999"
-          value={customInput}
-          onChangeText={(text) => {
-            setCustomInput(text);
-          }}
-          style={styles.input}
-        />
-
-        <TouchableOpacity
-          style={[
-            styles.nextButton,
-            !(selected || customInput) && { opacity: 0.5 },
-          ]}
-          onPress={handleNext}
-          disabled={!(selected || customInput)}
-        >
-          <Text style={styles.nextButtonText}>Next</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#1e1e1e",
-        justifyContent: "center",
-        },
-    header: {
-        width: "100%",
-        height: 110,
-        backgroundColor: "#c1d1d7",
-        position: "relative",
-        alignItems: "center",
-        justifyContent: "center",
-        },
-    backButton: {
-    position: "absolute",
-    top: 62,
-    left: 20,
-    },
-  headerTitle: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginTop: 36,
-  },
-  title: {
-    fontSize: 20,
+  poppinsBold: {
+    fontFamily: "Poppins",
     fontWeight: "bold",
-    color: "#1e1e1e",
   },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 36,
+  poppinsSemibold: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+  },
+  lexendRegular: {
+    fontFamily: "Lexend",
+  },
+  keyboardContainer: {
+    flex: 1,
+    backgroundColor: "#1e1e1e",
+    justifyContent: "center",
+  },
+  container: {
+    paddingBottom: 20, // Add some padding at the bottom
+  },
+  containerWithKeyboard: {
+    paddingBottom: 24, // Increase padding when the keyboard is visible
   },
   questionWrapper: {
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
+    paddingHorizontal: 24,
     gap: 12,
-    marginTop: 66,
+    marginTop: 80,
     marginBottom: 16,
   },
   questionText: {
-    fontSize: 24,
+    fontSize: 32,
+    lineHeight: 38.4,
     fontWeight: "bold",
-    color: "white",
+    color: "#C1D1D7",
   },
   buttonGrid: {
-    paddingHorizontal: 20,
+    marginTop: 24,
+    paddingHorizontal: 24,
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
-    paddingBottom: 20,
+    gap: 16,
   },
   button: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#c1d1d7",
     borderRadius: 22,
     paddingVertical: 10,
@@ -161,32 +203,44 @@ const styles = StyleSheet.create({
     backgroundColor: "#c1d1d7",
   },
   buttonText: {
-    color: "white",
+    color: "#C1D1D7",
     fontSize: 14,
   },
-  bottomArea: {
-    marginTop: "auto",
-    paddingBottom: 30,
+  selectedText: {
+    color: "#1e1e1e",
   },
-  orText: {
-    paddingHorizontal: 20,
+  bottomArea: {
+    marginTop: 32,
+  },
+  label:{
     color: "#c1d1d7",
-    marginBottom: 200,
+    fontSize: 24,
+    marginLeft: 24,
+    position: "absolute",
   },
   input: {
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#c1d1d7",
     color: "white",
     fontSize: 16,
-    paddingVertical: 6,
-    marginBottom: 20,
+    paddingBottom: 24,
+    marginHorizontal: 24,
+  },
+  inputText: {
+    color: "#c1d1d7",
+    fontSize: 24,
   },
   nextButton: {
     backgroundColor: "#c1d1d7",
-    paddingVertical: 14,
-    borderRadius: 50,
+    marginTop: 110,
+    marginHorizontal: 24,
+    borderRadius: 100,
     alignItems: "center",
+    justifyContent: "center",
+    paddingLeft:4,
+    width: 48,
+    height: 48,
+    marginLeft:"auto",
   },
   nextButtonText: {
     color: "#1e1e1e",

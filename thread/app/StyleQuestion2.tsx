@@ -33,13 +33,7 @@ export default function StyleQuestion3() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        {/* Title with sparkle icon */}
-        <View style={styles.titleContainer}>
-          <StyleMeHeader onBack={() => navigation.goBack()} />
-        </View>
-      </View>
+      <StyleMeHeader onBack={() => navigation.goBack()} />
 
       {/* Question + Description */}
       <View style={styles.contentWrapper}>
@@ -87,22 +81,21 @@ export default function StyleQuestion3() {
 }
 
 const styles = StyleSheet.create({
+  poppinsBold: {
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+  },
+  poppinsSemibold: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+  },
+  lexendRegular: {
+    fontFamily: "Lexend",
+  },
   container: {
     flex: 1,
     backgroundColor: "#1e1e1e",
     paddingTop: 0,
-  },
-  header: {
-    width: "100%",
-    height: 110,
-    backgroundColor: "#c1d1d7",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 36,
   },
   contentWrapper: {
     paddingHorizontal: 20,

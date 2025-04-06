@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { Sparkles, Star, X } from "lucide-react-native"; // Assuming you're using lucide-react-native for icons
+import { Star } from "lucide-react-native"; // Assuming you're using lucide-react-native for icons
 import { useNavigation } from '@react-navigation/native';
 // import generateHaiku from '../lib/generateOutfit'
 import { useRouter } from "expo-router";
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     paddingTop: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     paddingBottom: 0,
     justifyContent: "center",
     marginTop: "-160",
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     bottom: 60,
-    marginLeft: 16,
+    marginHorizontal: 24,
   },
   buttonText: {
     fontWeight: "bold",
