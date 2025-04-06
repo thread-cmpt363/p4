@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Calendar, Shirt, Sun } from "lucide-react-native";
+import { Shirt, Sun } from "lucide-react-native";
 import BottomNavigation from '../components/ui/bottomNavigation';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Svg, Path } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Dashboard(){
   const navigation = useNavigation();
@@ -30,6 +31,9 @@ export default function Dashboard(){
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <Image 
+          source={require("../assets/images/dashboard/header_paint_stroke.png")}
+          style={{position:"absolute", }} />
         <Text style={[styles.headerText, styles.poppinsBold]}>Dashboard</Text>
       </View>
 
@@ -38,8 +42,24 @@ export default function Dashboard(){
         {/* Your Closet Card */}
         <View style={[styles.card, styles.leftCardMargin, styles.rightCardMargin]}>
           <View style={styles.cardHeader}>
-            <Shirt size={20} color="white" strokeWidth={2.5}
-            style={{marginTop: 8}} />
+            <View style={{position:"relative", top: 4.5}}>
+              <Svg width="21" height="20" viewBox="0 0 21 20" fill="none">
+                <Path
+                  d="M3.50128 12.9929L8.83609 9.99132C9.34227 9.70111 9.91655 9.55079 10.5 9.55578C11.0835 9.55079 11.6577 9.70111 12.1639 9.99132L17.4987 12.9929C17.8771 13.2055 18.1744 13.5376 18.344 13.9371C18.5136 14.3366 18.5459 14.7811 18.436 15.201C18.3261 15.6209 18.0801 15.9925 17.7365 16.2576C17.3929 16.5228 16.971 16.6666 16.537 16.6665H4.463C4.02897 16.6666 3.60715 16.5228 3.26353 16.2576C2.91992 15.9925 2.67391 15.6209 2.56398 15.201C2.45406 14.7811 2.48643 14.3366 2.65602 13.9371C2.82562 13.5376 3.12288 13.2055 3.50128 12.9929Z"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <Path
+                  d="M8.72229 5.02722C8.72229 4.09216 9.5178 3.33398 10.5 3.33398C11.4821 3.33398 12.2776 4.09216 12.2776 5.02722C12.2776 5.66719 11.9043 6.2236 11.355 6.51158C10.9204 6.73913 10.5 7.11777 10.5 7.6093V9.55586"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </Svg>
+            </View>
             <Text style={[styles.cardTitle, styles.poppinsBold]}>Your Closet</Text>
           </View>
           <Text style={[styles.recentlyAddedText, styles.lexendRegular]}>Recently Added</Text>
@@ -78,7 +98,11 @@ export default function Dashboard(){
           </View>
 
           {/* Weather Card */}
-          <View style={[styles.card, styles.weatherCard, styles.rightCardMargin]}>
+          <LinearGradient 
+            start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+            locations={[0,0.35]}
+            colors={['#F4ECCF', '#C0D6DE']} 
+            style={[styles.card, styles.weatherCard, styles.rightCardMargin]}>
             <Text style={[styles.cityText, styles.poppinsSemibold]}>Vancouver</Text>
             <Text style={[styles.tempText, styles.poppinsSemibold]}>12°</Text>
             <View style={styles.weatherInfo}>
@@ -86,7 +110,7 @@ export default function Dashboard(){
               <Text style={[styles.weatherText, styles.lexendRegular]}>Sunny</Text>
               <Text style={[styles.weatherText, styles.lexendRegular]}>H:12° L:8°</Text>
             </View>
-          </View>
+          </LinearGradient>
         </View>
 
         {/* Style Me Button */}
@@ -124,7 +148,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 124,
+    height: 144,
     backgroundColor: "#c1d1d7",
     justifyContent: "flex-end",
     paddingLeft: 20,
