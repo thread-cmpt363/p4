@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,29 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Modal,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Check, Edit, X, ArrowLeft, Shirt } from "lucide-react-native";
+import { Check, Edit, X, ArrowLeft, Shirt, AlertCircle } from "lucide-react-native";
 
 export default function ClosetItemPreviewScreen() {
   const router = useRouter();
-  const { image, title: initialTitle, description  } = useLocalSearchParams();
+  const { image, title: initialTitle, description, invalid } = useLocalSearchParams();
 
   const [title, setTitle] = useState(initialTitle as string);
   const [desc, setDesc] = useState(description as string);
   const [isEditing, setIsEditing] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (invalid === "true") {
+      setErrorModalVisible(true);
+    }
+  }, [invalid]);
 
   const saveToCloset = async () => {
     try {
-      const response = await fetch("https://84b2-207-23-220-205.ngrok-free.app/api/save", {
+      const response = await fetch("https://7dbd-2001-569-5248-aa00-20ef-d733-166f-ba5a.ngrok-free.app/api/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -90,7 +98,6 @@ export default function ClosetItemPreviewScreen() {
           onSubmitEditing={() => setIsEditing(false)}
         />
 
-        {/* Edit Icon (optional) */}
         <TouchableOpacity onPress={() => setIsEditing(true)}>
           <Edit size={24} color="white" />
         </TouchableOpacity>
@@ -100,6 +107,28 @@ export default function ClosetItemPreviewScreen() {
       <TouchableOpacity style={styles.confirmButton} onPress={saveToCloset}>
         <Check size={28} color="#1e1e1e" />
       </TouchableOpacity>
+
+      {errorModalVisible && (
+      <Modal transparent animationType="fade" visible={errorModalVisible}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+            <AlertCircle size={40} color="#3A82F7" style={{ marginBottom: 12 }} />
+            <Text style={styles.modalTitle}>Clothing Not Recognized</Text>
+            <Text style={styles.modalMessage}>
+            We couldn’t recognize a clothing item in this image. Try again with better lighting, a clear background, and a sharp focus.
+            </Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                setErrorModalVisible(false);
+                router.replace("/");
+              }}
+            >
+              <Text style={styles.modalButtonText}>Retake Photo</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>)}
     </View>
   );
 }
@@ -109,7 +138,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1e1e1e",
     paddingTop: 60,
-    paddingHorizontal: 20,
   },
   header: {
     position: "absolute",
@@ -153,9 +181,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     resizeMode: "cover",
     marginVertical: 20,
+    paddingHorizontal: 20,
   },
   details: {
     gap: 12,
+    paddingHorizontal: 20,
   },
   titleInput: {
     fontSize: 20,
@@ -181,5 +211,42 @@ const styles = StyleSheet.create({
     backgroundColor: "#C1D1D7",
     padding: 16,
     borderRadius: 40,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalBox: {
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#1e1e1e",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  modalMessage: {
+    fontSize: 14,
+    color: "#444",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: "#3A82F7",
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 24,
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 14,
   },
 });

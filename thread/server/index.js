@@ -27,49 +27,78 @@ mongoClient.connect().then(() => {
     console.error("MongoDB Connection Error:", err);
   });
 
-app.post("/api/upload", upload.single("image"), async (req, res) => {
-  const imagePath = req.file.path;
-  const imageBuffer = fs.readFileSync(imagePath);
-  const base64Image = imageBuffer.toString("base64");
-
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    const result = await model.generateContent([
-      {
-        inlineData: {
-          mimeType: "image/jpeg",
-          data: base64Image,
+  app.post("/api/upload", upload.single("image"), async (req, res) => {
+    const imagePath = req.file.path;
+    const imageBuffer = fs.readFileSync(imagePath);
+    const base64Image = imageBuffer.toString("base64");
+  
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  
+      // STEP 1: Ask Gemini if it's a clothing item
+      const detectionResponse = await model.generateContent([
+        {
+          inlineData: {
+            mimeType: "image/jpeg",
+            data: base64Image,
+          },
         },
-      },
-      {
-        text: "Describe this clothing item with a title and a brief description of the item using the format:\nTitle: <title>\nDescription: <description>.",
-      },
-    ]);
-
-    const rawText = result.response.text();
-    let title = "Untitled";
-    let description = "No description available.";
-
-    const titleMatch = rawText.match(/Title:\s*(.+)/i);
-    const descMatch = rawText.match(/Description:\s*([\s\S]+)/i);
-
-    if (titleMatch) title = titleMatch[1].trim();
-    if (descMatch) description = descMatch[1].trim();
-
-    item = {
-      title,
-      description,
-      imagePath: `/uploads/${req.file.filename}`,
-      createdAt: new Date(),
-    };
-    await db.collection("ThreadApp").insertOne(item);
-    res.json(item);
-  } catch (err) {
-    console.error("Gemini Error:", err);
-    res.status(500).json({ error: "Failed to process image with Gemini AI" });
-  }
-});
+        {
+          text: "Does this image show a clothing item? Answer only YES or NO. If unsure, say NO.",
+        },
+      ]);
+  
+      const isClothing = detectionResponse.response.text().trim().toUpperCase();
+  
+      // STEP 2: Ask Gemini to describe the image
+      const descriptionResponse = await model.generateContent([
+        {
+          inlineData: {
+            mimeType: "image/jpeg",
+            data: base64Image,
+          },
+        },
+        {
+          text: "Describe this clothing item with a title and a brief description of the item using the format:\nTitle: <title>\nDescription: <description>.",
+        },
+      ]);
+  
+      const rawText = descriptionResponse.response.text();
+      let title = "Untitled";
+      let description = "No description available.";
+  
+      const titleMatch = rawText.match(/Title:\s*(.+)/i);
+      const descMatch = rawText.match(/Description:\s*([\s\S]+)/i);
+  
+      if (titleMatch) title = titleMatch[1].trim();
+      if (descMatch) description = descMatch[1].trim();
+  
+      // STEP 3: Check if invalid — either not clothing or generic response
+      if (isClothing !== "YES" || title === "Untitled" || description === "No description available.") {
+        return res.json({
+          title: "",
+          description: "",
+          invalid: true
+        });
+      }
+  
+      // STEP 4: Save to DB
+      const item = {
+        title,
+        description,
+        imagePath: `/uploads/${req.file.filename}`,
+        createdAt: new Date(),
+      };
+  
+      await db.collection("ThreadApp").insertOne(item);
+  
+      res.json(item);
+    } catch (err) {
+      console.error("Gemini Error:", err);
+      res.status(500).json({ error: "Failed to process image with Gemini AI" });
+    }
+  });
+  
 
 app.post("/api/save", (req, res) => {
   const { title, description, image } = req.body;
@@ -83,9 +112,9 @@ app.post("/api/generate-outfit", async (req, res) => {
   try {
     // Step 1: Validate user inputs
     const validationPrompt = `
-You are validating styling inputs. Is the following an occasion for everyday human outfit planning?
+You are validating styling inputs. Is the following an occasion for human outfit planning?
 Occasion: ${occasion}
-Is the following a plausible style preference for everyday human outfit planning? 
+Is the following a plausible style preference for human outfit planning? 
 Style: ${style}
 
 Only respond with:

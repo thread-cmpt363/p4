@@ -33,7 +33,7 @@ export default function BottomNavigation() {
     } as unknown as Blob); // TypeScript workaround
 
     try {
-      const response = await fetch("https://84b2-207-23-220-205.ngrok-free.app/api/upload", {
+      const response = await fetch("https://7dbd-2001-569-5248-aa00-20ef-d733-166f-ba5a.ngrok-free.app/api/upload", {
         method: "POST",
         body: formData,
         headers: {
@@ -47,7 +47,8 @@ export default function BottomNavigation() {
         "/closet-item-preview" +
         `?image=${encodeURIComponent(imageUri)}` +
         `&title=${encodeURIComponent(data.title)}` +
-        `&description=${encodeURIComponent(data.description)}`;
+        `&description=${encodeURIComponent(data.description)}` +
+        `&invalid=${data.invalid ? "true" : "false"}`;
 
       router.push(query);
     } catch (error) {
@@ -67,6 +68,7 @@ export default function BottomNavigation() {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setTimeout(() => setModalVisible(false), 300);
       uploadToBackend(result.assets[0].uri);
     }
   };
@@ -81,6 +83,7 @@ export default function BottomNavigation() {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setTimeout(() => setModalVisible(false), 300);
       uploadToBackend(result.assets[0].uri);
     }
   };
